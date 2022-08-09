@@ -88,7 +88,7 @@ export class CarsListComponent implements OnInit {
         },
         error: () => {
           this.spinner.hide();
-          this.messageService.add({ severity: 'danger', detail: 'Error updating car' });
+          this.messageService.add({ severity: 'error', detail: 'Error updating car' });
         }
       });
     } else {
@@ -101,7 +101,7 @@ export class CarsListComponent implements OnInit {
         },
         error: () => {
           this.spinner.hide();
-          this.messageService.add({ severity: 'danger', detail: 'Error adding car' });
+          this.messageService.add({ severity: 'error', detail: 'Error adding car' });
         }
       });
     }
@@ -128,7 +128,7 @@ export class CarsListComponent implements OnInit {
           },
           error: () => {
             this.spinner.hide();
-            this.messageService.add({ severity: 'danger', detail: 'Error deleting car' });
+            this.messageService.add({ severity: 'error', detail: 'Error deleting car' });
           }
         });
       },
@@ -148,7 +148,7 @@ export class CarsListComponent implements OnInit {
         anchor.click();
         window.URL.revokeObjectURL(blob);
       })
-      .catch(() => this.messageService.add({ severity: 'danger', detail: 'Error downloading the file' }));
+      .catch(() => this.messageService.add({ severity: 'error', detail: 'Error downloading the file' }));
   }
 
 }
