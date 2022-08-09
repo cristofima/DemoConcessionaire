@@ -1,0 +1,88 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+<p-toast></p-toast>
+
+<p-dialog header="Car details" [(visible)]="displayDialog" [modal]="true">
+  <div class="card">
+    <form *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field col-12 md:col-4">
+          <label for="brand">Brand</label>
+          <input id="brand" type="text" pInputText formControlName="brand" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="model">Model</label>
+          <input id="model" type="text" pInputText formControlName="model" />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label for="year">Year</label>
+          <p-inputNumber id="year" formControlName="year" [min]="2020" [showButtons]="true">
+          </p-inputNumber>
+        </div>
+        <div class="field col-12">
+          <label for="image">Image</label>
+          <p-fileUpload name="image" accept="image/*" [auto]="true" [customUpload]="true" #imageFileUpload>
+          </p-fileUpload>
+        </div>
+        <div class="field col-12">
+          <label for="document">Technical Data Sheet</label>
+          <p-fileUpload name="document" accept="application/pdf" [auto]="true" [customUpload]="true"
+            #documentFileUpload></p-fileUpload>
+        </div>
+      </div>
+      <p-button label="Save" type="submit" [disabled]="!formGroup.valid"></p-button>
+    </form>
+  </div>
+</p-dialog>
+
+<p-button title="Add" icon="pi pi-plus" (onClick)="displayDialog = true"></p-button>
+
+<div class="table-container">
+  <p-table [value]="cars" responsiveLayout="stack" [loading]="loadingTable">
+    <ng-template pTemplate="caption">
+      Cars
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon>
+        </th>
+        <th pSortableColumn="model">Model <p-sortIcon field="model"></p-sortIcon>
+        </th>
+        <th pSortableColumn="year">Year <p-sortIcon field="year"></p-sortIcon>
+        </th>
+        <th>Image</th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>
+          <p-columnFilter type="text" field="brand"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="model"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="numeric" field="year"></p-columnFilter>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-car>
+      <tr>
+        <td>{{car.brand}}</td>
+        <td>{{car.model}}</td>
+        <td>{{car.year}}</td>
+        <td style="text-align: center;">
+          <img src="{{azureStorageBaseUrl}}/images/{{car.imagePath}}" style="max-height: 50px;" *ngIf="car.imagePath" />
+        </td>
+        <td>
+          <p-button [disabled]="!car.technicalDataSheetPath" title="Download Technical Data Sheet" icon="pi pi-download"
+            styleClass="p-button-secondary" (onClick)="download(car.technicalDataSheetPath)"></p-button>
+          <p-button title="Edit" icon="pi pi-pencil" styleClass="p-button-success" (onClick)="editCar(car)"></p-button>
+          <p-button title="Delete" icon="pi pi-trash" styleClass="p-button-danger" (onClick)="deleteCar(car)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
