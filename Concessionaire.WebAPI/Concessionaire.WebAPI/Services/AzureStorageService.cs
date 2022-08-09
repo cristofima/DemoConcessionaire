@@ -33,14 +33,13 @@ namespace Concessionaire.WebAPI.Services
             if (file.Length == 0) return null;
 
             var containerName = Enum.GetName(typeof(ContainerEnum), container).ToLower();
-            var extName = Path.GetExtension(file.FileName);
             
             var blobContainerClient = new BlobContainerClient(this.azureStorageConnectionString, containerName);
 
             // Get a reference to the blob just uploaded from the API in a container from configuration settings
             if (string.IsNullOrEmpty(blobName))
             {
-                blobName = Guid.NewGuid().ToString() + extName;
+                blobName = Guid.NewGuid().ToString();
             }
 
             var blobClient = blobContainerClient.GetBlobClient(blobName);
